@@ -1,10 +1,10 @@
 ###########################################
-# File::Comments::Plugin::C 
+# File::Comments::Plugin::Makefile 
 # 2005, Mike Schilli <cpan@perlmeister.com>
 ###########################################
 
 ###########################################
-package File::Comments::Plugin::C;
+package File::Comments::Plugin::Makefile;
 ###########################################
 
 use strict;
@@ -20,7 +20,8 @@ sub init {
 ###########################################
     my($self) = @_;
 
-    $self->register_suffix(".c");
+    $self->register_base("Makefile");
+    $self->register_base("makefile");
 }
 
 ###########################################
@@ -28,7 +29,7 @@ sub type {
 ###########################################
     my($self, $target) = @_;
 
-    return "c";
+    return "make";
 }
 
 ###########################################
@@ -36,7 +37,7 @@ sub comments {
 ###########################################
     my($self, $target) = @_;
 
-    return $self->extract_c_comments($target);
+    return $self->extract_hashed_comments($target);
 }
 
 1;
@@ -45,20 +46,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::C - Plugin to detect comments in C/C++ source code
+File::Comments::Plugins::Makefile - Plugin to detect comments in makefiles
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::C;
+    use File::Comments::Plugins::Makefile;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::C is a plugin for the File::Comments framework.
-
-Both /* ... */ and // style comments are recognized.
-
-This is I<not> a full-blown C parser/preprocessor yet, so it gets easily
-confused (e.g. if c strings contain comment sequences).
+File::Comments::Plugins::Makefile is a plugin for the File::Comments framework.
 
 =head1 LEGALESE
 

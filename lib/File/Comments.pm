@@ -25,6 +25,7 @@ sub new {
 
     my $self = {
         suffixes   => {},
+        bases      => {},
         plugins    => [],
         %options,
     };
@@ -57,8 +58,10 @@ sub find_plugin {
     my($self) = @_;
 
         # Is there a suffix handler defined?
-    if(exists $self->{target}->{suffix} and
+    if(defined $self->{target}->{suffix} and
        exists $self->{suffixes}->{$self->{target}->{suffix}}) {
+
+        DEBUG "Searching for plugin handling suffix $self->{target}->{suffix}";
 
         for my $plugin (@{$self->{suffixes}->{$self->{target}->{suffix}}}) {
             DEBUG "Checking if ", ref $plugin, 
@@ -73,6 +76,26 @@ sub find_plugin {
         }
     }
 
+        # Is there a base handler defined?
+    if(defined $self->{target}->{file_base} and
+       exists $self->{bases}->{$self->{target}->{file_base}}) {
+
+        DEBUG "Searching for plugin handling base $self->{target}->{file_base}";
+
+        for my $plugin (@{$self->{bases}->{$self->{target}->{file_base}}}) {
+            DEBUG "Checking if ", ref $plugin, 
+                  " is applicable for base ",
+                  "'$self->{target}->{file_base}'";
+            if($plugin->applicable($self->{target})) {
+                DEBUG ref($plugin), " accepted";
+                return $plugin;
+            } else {
+                DEBUG ref($plugin), " rejected";
+            }
+        }
+    }
+
+        # Hmm ... no volunteers yet.
         # Go from door to door and check if some plugin wants to 
         # handle it. Set the 'cold_call' flag to let the plugin know
         # about our desparate move.
@@ -146,6 +169,18 @@ sub register_suffix {
     push @{$self->{suffixes}->{$suffix}}, $plugin_obj;
 }
 
+###########################################
+sub register_base {
+###########################################
+    my($self, $base, $plugin_obj) = @_;
+
+    DEBUG "Registering ", ref $plugin_obj, 
+          " as a handler for base $base";
+
+        # Could be more than one, line them up
+    push @{$self->{bases}->{$base}}, $plugin_obj;
+}
+
 ##################################################
 # Poor man's Class::Struct
 ##################################################
@@ -179,6 +214,7 @@ package File::Comments::Target;
 ###########################################
 use Sysadm::Install qw(:all);
 use File::Basename;
+use Log::Log4perl qw(:easy);
 
 ###########################################
 sub new {
@@ -213,8 +249,19 @@ sub load {
 
     $self->{file_name} = basename($path);
 
-    ($self->{dir}, $self->{file_name_base}, $self->{suffix}) =
-        fileparse($path, qr{\.[^.]*$})
+    $self->{dir}       = dirname($path);
+    $self->{suffix}    = undef;
+    $self->{file_base} = $self->{file_name};
+
+    if(index($self->{file_name}, ".") >= 0) {
+        ($self->{file_base}, $self->{suffix}) = 
+            ($self->{file_name} =~ m#(.+)(\.[^.]*$)#);
+    }
+
+    DEBUG "Loaded file path=$path name=$self->{file_name} ",
+          "dir=$self->{dir} suffix=", 
+          defined $self->{suffix} ? $self->{suffix} : "[undef]",
+          " base=$self->{file_base}"; 
 }
 
 File::Comments::make_accessor("File::Comments::Target", $_)
