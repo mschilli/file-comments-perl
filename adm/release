@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+###########################################
+# release -- Release this module
+# Mike Schilli, 2005 (cpan@perlmeister.com)
+###########################################
+use warnings;
+use strict;
+use Sysadm::Install qw(:all);
+
+BEGIN {
+    cp "adm/Knowledge.tmpl", "lib/Text/Guess/License/Knowledge.pm";
+    $ENV{TEST_GUESS_LICENSE_NO_TRAINING} = 1;
+}
+
+    # Available at http://perlmeister.com/scripts
+use ModDevUtils;
+
+ModDevUtils::release() or exit 0;
+
+my $ball = ModDevUtils::tarball_name();
+print "Copying $ball to perlmeister.com ...\n";
+system("scp $ball perlmeis\@sprite.netnation.com:/home/perlmeis/tmp");
+print "Releasing it on perlmeister.com ...\n";
+system("ssh -l perlmeis sprite.netnation.com bin/rel $ball\n");

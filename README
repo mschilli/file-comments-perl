@@ -3,7 +3,8 @@
 ######################################################################
 
 NAME
-    File::Comments - Extracts comments from files in various formats
+    File::Comments - Recognizes file formats and extracts format-specific
+    comments
 
 SYNOPSIS
         use File::Comments;
@@ -15,16 +16,16 @@ SYNOPSIS
             # | /* comment */
             # | main () {}
             # *----------------
-        my @comments = $snoop->comments("program.c");
-            # => " comment "
+        my $comments = $snoop->comments("program.c");
+            # => [" comment "]
 
             # *----------------
             # | script.pl:
             # | # comment
             # | print "howdy!\n"; # another comment
             # *----------------
-        my @comments = $snoop->comments("script.pl");
-            # => (" comment", " another comment")
+        my $comments = $snoop->comments("script.pl");
+            # => [" comment", " another comment"]
 
             # or just guess a file's type:
         my $type = $snoop->guess_type("program.c");    
@@ -32,7 +33,8 @@ SYNOPSIS
 
 DESCRIPTION
     File::Comments guesses the type of a given file, determines the format
-    used for comments, extracts all comments, and returns them in chunks.
+    used for comments, extracts all comments, and returns them as a
+    reference to an array of chunks.
 
     Currently supported are Perl scripts, C/C++ programs, Java, makefiles,
     JavaScript, Python and PHP.
@@ -50,6 +52,9 @@ DESCRIPTION
     the file's content is used to narrow down the possibilities and arrive
     at a decision.
 
+    WARNING: THIS MODULE IS UNDER DEVELOPMENT, QUALITY IS ALPHA. IF YOU FIND
+    BUGS, OR WANT TO CONTRIBUTE PLUGINS, PLEASE SEND THEM MY WAY.
+
   FILE TYPES
     Currently, the following plugins are included in the File::Comments
     distribution:
@@ -58,16 +63,126 @@ DESCRIPTION
         # plugin                              type    #
         ###############################################
           File::Comments::Plugin::C          c 
-          File::Comments::Plugin::Perl       perl
-          File::Comments::Plugin::JavaScript js
-          File::Comments::Plugin::Java       java
           File::Comments::Plugin::Makefile   makefile
-          File::Comments::Plugin::HTML       html
-          File::Comments::Plugin::Python     python
-          File::Comments::Plugin::PHP        php
+          File::Comments::Plugin::Perl       perl
+          File::Comments::Plugin::JavaScript js (*)
+          File::Comments::Plugin::Java       java (*)
+          File::Comments::Plugin::HTML       html (*)
+          File::Comments::Plugin::Python     python (*)
+          File::Comments::Plugin::PHP        php (*)
+
+          (*) not implemented yet, but soon!
 
     The constants listed in the *type* column are the strings returned by
     the "guess_type()" method.
+
+  Writing new plugins
+    Writing a new plugin to add functionality to the File::Comments
+    framework is as simple as defining a new module, derived from the
+    baseclass of all plugins, "File::Comments::Plugin". Three additional
+    methods are needed: "init()", "type()", and "comments()".
+
+    "init()" gets called when the mothership finds the plugin and
+    initializes it. This is the time to register extensions that the plugin
+    wants to handle.
+
+    The second mandatory method for a plugin is "type()", which returns a
+    string, indicating the type of the file examined. Usually this can be
+    done without further ado, since a basic plugin will called only on files
+    which it registered for by suffix. Exceptions to this are explained
+    later.
+
+    The third method is "comments()", which returns a reference to an array
+    of comment lines. The content of the source file to be examined will be
+    available in
+
+        $self->{target}->{content}
+
+    by the time "comments()" gets called.
+
+    And that's it. Here's a functional basic plugin, registering a new
+    suffix ".odd" with the mothership and expecting files with comment lines
+    that start with "ODDCOMMENT":
+
+        ###########################################
+        package File::Comments::Plugin::Oddball;
+        ###########################################
+
+        use strict;
+        use warnings;
+        use File::Comments::Plugin;
+
+        our $VERSION = "0.01";
+        our @ISA     = qw(File::Comments::Plugin);
+
+        ###########################################
+        sub init {
+        ###########################################
+            my($self) = @_;
+    
+            $self->register_suffix(".odd");
+        }
+
+        ###########################################
+        sub type {
+        ###########################################
+            my($self) = @_;
+    
+            return "odd";
+        }
+
+        ###########################################
+        sub comments {
+        ###########################################
+            my($self) = @_;
+    
+            # Some code to extract all comments from 
+            # $self->{target}->{content}:
+            my @comments = ($self->{target}->{content} =~ /^ODDCOMMENT:(.*)/);
+            return \@comments;
+        }
+
+        1;
+
+  Advanced plugins
+    If a file doesn't have an extension or an extensions that's served by
+    multiple plugins, File::Comments will go shop around and ask all plugins
+    if they want to handle the file. The mothership calls each plugin's
+    "applicable()" method, passing it an object of type
+    "File::Comments::Target", which contains the following fields:
+
+    When the plugin gets such a *cold call* (indicated by the third
+    parameter to "applicable()", it can either accept or deny the request.
+    To arrive at a decision, it can peek into the target object. The Perl
+    plugin illustrates this:
+
+        ###########################################
+        sub applicable {
+        ###########################################
+            my($self, $target, $cold_call) = @_;
+    
+            return 1 unless $cold_call;
+    
+            return 1 if $target->{content} =~ /^#!.*perl\b/;
+
+            return 0;
+        }
+
+    If a plugin does not define a "applicable()" method, a default method is
+    inherited from the base class "File::Comments::Plugin", which looks like
+    this:
+
+        ###########################################
+        sub applicable {
+        ###########################################
+            my($self, $target, $cold_call) = @_;
+
+            return 0 if $cold_call;
+            return 1;
+        }
+
+    This will deny all *cold calls* and only accept requests for files with
+    suffixes or base names the plugin has already signed up for.
 
 LEGALESE
     Copyright 2005 by Mike Schilli, all rights reserved. This program is
