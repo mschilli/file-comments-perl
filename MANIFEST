@@ -2,7 +2,6 @@ Changes
 eg/check-type
 eg/extract-comments
 eg/program.c
-File-Comments.ppd
 lib/File/Comments.pm
 lib/File/Comments/Plugin.pm
 lib/File/Comments/Plugin/C.pm
