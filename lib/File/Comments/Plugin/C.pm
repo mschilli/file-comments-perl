@@ -1,5 +1,6 @@
 ###########################################
-# File::Comments::Plugin::C -- 2005, Mike Schilli <cpan@perlmeister.com>
+# File::Comments::Plugin::C 
+# 2005, Mike Schilli <cpan@perlmeister.com>
 ###########################################
 
 ###########################################
@@ -15,31 +16,17 @@ our $VERSION = "0.01";
 our @ISA     = qw(File::Comments::Plugin);
 
 ###########################################
-sub applicable {
-###########################################
-    my($self, $target, $cold_call) = @_;
-
-    if($cold_call) {
-        DEBUG __PACKAGE__, " doesn't accept cold calls";
-        return 0;
-    }
-
-    DEBUG __PACKAGE__, " accepts";
-    return 1;
-}
-
-###########################################
 sub init {
 ###########################################
     my($self) = @_;
 
-    $self->{mothership}->register_suffix(".c", $self);
+    $self->register_suffix(".c");
 }
 
 ###########################################
 sub type {
 ###########################################
-    my($self) = @_;
+    my($self, $target) = @_;
 
     return "c";
 }
@@ -47,9 +34,21 @@ sub type {
 ###########################################
 sub comments {
 ###########################################
-    my($self) = @_;
+    my($self, $target) = @_;
 
-    return qw(foo bar baz);
+    my @comments = ();
+
+        # This will get confused with c strings containing things
+        # like "/*", but good enough for now until we can hook in a full 
+        # C parser/preprocessor.
+    while($target->{content} =~ 
+            m#/\*(.*?)\*/|
+              ^\s*//(.*?)$
+             #mxsg) {
+        push @comments, defined $1 ? $1 : $2;
+    }
+
+    return \@comments;
 }
 
 1;
@@ -58,7 +57,7 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::C - Plugin to detect/analyze C source code
+File::Comments::Plugins::C - Plugin to detect comments in C/C++ source code
 
 =head1 SYNOPSIS
 
@@ -67,6 +66,11 @@ File::Comments::Plugins::C - Plugin to detect/analyze C source code
 =head1 DESCRIPTION
 
 File::Comments::Plugins::C is a plugin for the File::Comments framework.
+
+Both /* ... */ and // style comments are recognized.
+
+This is I<not> a full-blown C parser/preprocessor yet, so it gets easily
+confused (e.g. if c strings contain comment sequences).
 
 =head1 LEGALESE
 

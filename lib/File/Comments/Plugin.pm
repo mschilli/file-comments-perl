@@ -8,6 +8,7 @@ package File::Comments::Plugin;
 
 use strict;
 use warnings;
+use Log::Log4perl qw(:easy);
 
 our $VERSION = "0.01";
 
@@ -30,7 +31,15 @@ sub new {
 ###########################################
 sub applicable {
 ###########################################
-    die "Mandatory method applicable() not defined in ", ref $_[0];
+    my($self, $target, $cold_call) = @_;
+
+    if($cold_call) {
+        DEBUG "", __PACKAGE__, " doesn't accept cold calls";
+        return 0;
+    }
+
+    DEBUG "", __PACKAGE__, " accepts";
+    return 1;
 }
 
 ###########################################
@@ -44,6 +53,18 @@ sub init {
 ###########################################
     die "Mandatory method init() not defined in ", ref $_[0];
 }
+
+###########################################
+sub register_suffix {
+###########################################
+    my($self, $suffix) = @_;
+    
+    $self->mothership()->register_suffix($suffix, $self);
+}
+
+###########################################
+sub mothership { return $_[0]->{mothership} }
+###########################################
 
 1;
 

@@ -75,7 +75,7 @@ sub find_plugin {
 
         # Go from door to door and check if some plugin wants to 
         # handle it. Set the 'cold_call' flag to let the plugin know
-        # our desparate move.
+        # about our desparate move.
     for my $plugin (@{$self->{plugins}}) {
          DEBUG "Checking if ", ref $plugin, " is applicable for ",
                "file '$self->{target}->{path}' (cold call)";
@@ -125,11 +125,11 @@ sub comments {
     if(! defined $plugin) {
         ERROR "Type of $target couldn't be determined";
             # Just return and empty list
-        return ();
+        return undef;
     }
 
     DEBUG "Calling ", ref $plugin, 
-          " to handle $self->{path}";
+          " to handle $self->{target}->{path}";
 
     return $plugin->comments($self->{target});
 }
@@ -239,16 +239,16 @@ File::Comments - Extracts comments from files in various formats
         # | /* comment */
         # | main () {}
         # *----------------
-    my @comments = $snoop->comments("program.c");
-        # => " comment "
+    my $comments = $snoop->comments("program.c");
+        # => [" comment "]
 
         # *----------------
         # | script.pl:
         # | # comment
         # | print "howdy!\n"; # another comment
         # *----------------
-    my @comments = $snoop->comments("script.pl");
-        # => (" comment", " another comment")
+    my $comments = $snoop->comments("script.pl");
+        # => [" comment", " another comment"]
 
         # or just guess a file's type:
     my $type = $snoop->guess_type("program.c");    
@@ -257,7 +257,8 @@ File::Comments - Extracts comments from files in various formats
 =head1 DESCRIPTION
 
 File::Comments guesses the type of a given file, determines the format
-used for comments, extracts all comments, and returns them in chunks.
+used for comments, extracts all comments, and returns them as a reference
+to an array of chunks.
 
 Currently supported are Perl scripts, C/C++ programs, Java, makefiles,
 JavaScript, Python and PHP.
@@ -294,6 +295,77 @@ distribution:
 
 The constants listed in the I<type> column are the strings returned
 by the C<guess_type()> method.
+
+=head2 Writing new plugins
+
+Writing a new plugin to add functionality to the File::Comments framework
+is as simple as defining a new module, derived from the baseclass of all
+plugins, C<File::Comments::Plugin>. Three additional methods are needed: 
+C<init()>, C<type()>, and C<comments()>.
+
+C<init()> gets called when the mothership finds the plugin and
+initializes it. This is the time to register extensions that the plugin
+wants to handle.
+
+The second mandatory method for a plugin is C<type()>, which returns
+a string, indicating the type of the file examined. Usually this can
+be done without further ado, since a basic plugin will called only
+on files which it registered for by suffix. Exceptions to this are
+explained later.
+
+The third method is C<comments()>, which returns a reference to an 
+array of comment lines. The content of the source file to be examined
+will be available in 
+
+    $self->{target}->{content}
+
+by the time C<comments()> gets called.
+
+And that's it. Here's a functional basic plugin, registering a new 
+suffix ".odd" with the mothership and expecting files with comment lines
+that start with C<ODDCOMMENT>:
+
+    ###########################################
+    package File::Comments::Plugin::Oddball;
+    ###########################################
+
+    use strict;
+    use warnings;
+    use File::Comments::Plugin;
+
+    our $VERSION = "0.01";
+    our @ISA     = qw(File::Comments::Plugin);
+
+    ###########################################
+    sub init {
+    ###########################################
+        my($self) = @_;
+    
+        $self->register_suffix(".odd");
+    }
+
+    ###########################################
+    sub type {
+    ###########################################
+        my($self) = @_;
+    
+        return "odd";
+    }
+
+    ###########################################
+    sub comments {
+    ###########################################
+        my($self) = @_;
+    
+        # Some code to extract all comments from 
+        # $self->{target}->{content}:
+        my @comments = ($self->{target}->{content} =~ /^ODDCOMMENT:(.*)/);
+        return \@comments;
+    }
+
+    1;
+
+TODO: cold calls.
 
 =head1 LEGALESE
 
