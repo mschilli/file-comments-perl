@@ -11,7 +11,8 @@ use strict;
 use warnings;
 use File::Comments::Plugin;
 use Log::Log4perl qw(:easy);
-use Pod::Parser;
+use PPI;
+use Sysadm::Install qw(:all);
 
 our $VERSION = "0.01";
 our @ISA     = qw(File::Comments::Plugin);
@@ -45,58 +46,39 @@ sub type {
     return "perl";
 }
 
-###########################################
+#####################################################
 sub comments {
-###########################################
+#####################################################
     my($self, $target) = @_;
 
-    my $comments = $self->extract_hashed_comments($target);
+    my $data = $target->{content};
+    my($end) = ($data =~ /^__END__(.*)/ms);
 
-    my $pod = PodExtractor->new();
-    $pod->parse_from_file($target->{path});
-    push @$comments, @{$pod->pod_chunks()};
+    my @comments = comments_from_snippet($data);
+    push @comments, comments_from_snippet($end) if defined $end;
 
-    return $comments;
+    return \@comments;
 }
 
-###########################################
-package PodExtractor;
-###########################################
-use Log::Log4perl qw(:easy);
-our @ISA = qw(Pod::Parser);
-###########################################
+#####################################################
+sub comments_from_snippet {
+#####################################################
+    my($src) = @_;
 
-###########################################
-sub new {
-###########################################
-    my($class) = @_;
-    
-    my $self = { chunks => [] };
+    my $doc = PPI::Document->new($src); #bar
+    my @comments = ();
 
-    bless $self, $class;
+    $doc->find(sub {
+        return if ref($_[1]) ne "PPI::Token::Comment" and
+                  ref($_[1]) ne "PPI::Token::Pod";
+        my $line = $_[1]->content();
+            # Delete leading '#' if it's a comment
+        $line = substr($line, 1) if ref($_[1]) eq "PPI::Token::Comment";
+        chomp $line;
+        push @comments, $line;
+    });
 
-    return $self;
-}   
-
-###########################################
-sub textblock {
-###########################################
-    my ($self, $paragraph, $line_num) = @_;
-
-    push @{$self->{chunks}}, $paragraph;
-    DEBUG "Found textblock $paragraph";
-}
-
-sub command {}
-sub verbatim {}
-sub interior_sequence {}
-
-###########################################
-sub pod_chunks {
-###########################################
-    my ($self) = @_;
-
-    return $self->{chunks};
+    return @comments;
 }
 
 1;

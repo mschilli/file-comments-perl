@@ -1,5 +1,8 @@
 ######################################################################
 Revision history for Perl extension File::Comments
 
+0.02  (not yet released)
+      (ms) Added PPI parser to Perl plugin, enabling inline comments.
+
 0.01  2005/02/06
-      * Where it all began.
+      (ms) Where it all began.
