@@ -102,9 +102,11 @@ sub find_plugin {
     for my $plugin (@{$self->{plugins}}) {
          DEBUG "Checking if ", ref $plugin, " is applicable for ",
                "file '$self->{target}->{path}' (cold call)";
-        if($plugin->applicable($self->{target}->{path}, 
-                               $self->{target}->{content}, 1)) {
+        if($plugin->applicable($self->{target}, 1)) {
+            DEBUG "Cold call accepted";
             return $plugin;
+        } else {
+            DEBUG "Cold call rejected";
         }
     }
 
@@ -332,13 +334,15 @@ distribution:
     # plugin                              type    #
     ###############################################
       File::Comments::Plugin::C          c 
-      File::Comments::Plugin::Perl       perl
-      File::Comments::Plugin::JavaScript js
-      File::Comments::Plugin::Java       java
       File::Comments::Plugin::Makefile   makefile
-      File::Comments::Plugin::HTML       html
-      File::Comments::Plugin::Python     python
-      File::Comments::Plugin::PHP        php
+      File::Comments::Plugin::Perl       perl (*)
+      File::Comments::Plugin::JavaScript js (*)
+      File::Comments::Plugin::Java       java (*)
+      File::Comments::Plugin::HTML       html (*)
+      File::Comments::Plugin::Python     python (*)
+      File::Comments::Plugin::PHP        php (*)
+
+      (*) not implemented yet, but soon!
 
 The constants listed in the I<type> column are the strings returned
 by the C<guess_type()> method.
@@ -412,7 +416,47 @@ that start with C<ODDCOMMENT>:
 
     1;
 
-TODO: cold calls.
+=head2 Advanced plugins
+
+If a file doesn't have an extension or an extensions that's served by
+multiple plugins, File::Comments will go shop around and ask all
+plugins if they want to handle the file. The mothership calls 
+each plugin's C<applicable()> method, passing it an object of
+type C<File::Comments::Target>, which contains the following
+fields:
+
+When the plugin gets such a I<cold call> (indicated by the
+third parameter to C<applicable()>, it can either accept or deny
+the request. To arrive at a decision, it can peek into the target
+object. The Perl plugin illustrates this:
+
+    ###########################################
+    sub applicable {
+    ###########################################
+        my($self, $target, $cold_call) = @_;
+    
+        return 1 unless $cold_call;
+    
+        return 1 if $target->{content} =~ /^#!.*perl\b/;
+
+        return 0;
+    }
+
+If a plugin doesn't define a C<applicable()> method, a default method
+is inherited from the base class C<File::Comments::Plugin>, which looks
+like this:
+
+    ###########################################
+    sub applicable {
+    ###########################################
+        my($self, $target, $cold_call) = @_;
+
+        return 0 if $cold_call;
+        return 1;
+    }
+
+This will deny all I<cold calls> and only accept requests for files
+with suffixes or base names the plugin has already signed up for.
 
 =head1 LEGALESE
 
