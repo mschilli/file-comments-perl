@@ -26,6 +26,8 @@ blurt(<<EOT, $tmpfile);
 # First comment
 # Second
 # Third
+__END__
+# End
 EOT
 
 my $chunks = $snoop->comments($tmpfile);
@@ -34,6 +36,7 @@ ok($chunks, "find perl comments");
 is($chunks->[0], " First comment", "hashed comment");
 is($chunks->[1], " Second", "hashed comment");
 is($chunks->[2], " Third",   "hashed comment");
+is($chunks->[3], "\n# End\n",   "__END__");
 
 ######################################################################
 my $tmpfile2 = "$eg/testperl";
@@ -92,5 +95,6 @@ is($chunks->[0], "!/usr/bin/perl", "hashed comment");
 is($chunks->[1], " First comment", "hashed comment");
 is($chunks->[2], " Second", "hashed comment");
 is($chunks->[3], " Third",   "hashed comment");
-is($chunks->[4], "=head2 some pod\n\nYada yada yada.\n\n=cut", 
+is($chunks->[4], "\n\n=head2 some pod\n\nYada yada yada." .
+                 "\n\n=cut\n\nprint \"Yada\n\";\n", 
                  "pod comment");

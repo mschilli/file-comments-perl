@@ -4,6 +4,10 @@ Revision history for Perl extension File::Comments
 0.03  02/08/2005
       (ms) Moved extracting functions from Plugin.pm into plugins
       (ms) Added Shell plugin
+      (ms) added .H to C plugin
+      (ms) perl plugin now takes __END__ literally. 
+      (ms) Fallback if perl parsing fails: return entire script text
+           as comment.
 
 0.02  02/07/2005
       (ms) Added PPI parser to Perl plugin, enabling inline comments.

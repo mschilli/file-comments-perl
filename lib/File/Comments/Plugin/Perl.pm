@@ -54,8 +54,8 @@ sub comments {
     my $data = $target->{content};
     my($end) = ($data =~ /^__END__(.*)/ms);
 
-    my @comments = comments_from_snippet($data);
-    push @comments, comments_from_snippet($end) if defined $end;
+    my @comments = $self->comments_from_snippet($target, $data);
+    push @comments, $end if defined $end;
 
     return \@comments;
 }
@@ -63,10 +63,16 @@ sub comments {
 #####################################################
 sub comments_from_snippet {
 #####################################################
-    my($src) = @_;
+    my($self, $target, $src) = @_;
 
     my $doc = PPI::Document->new($src); #bar
     my @comments = ();
+
+    if(!defined $doc) {
+        # Parsing perl script failed. Just return everything.
+        WARN "Parsing $target->{path} failed";
+        return $src;
+    }
 
     $doc->find(sub {
         return if ref($_[1]) ne "PPI::Token::Comment" and

@@ -25,6 +25,7 @@ sub init {
     $self->register_suffix(".cc");
     $self->register_suffix(".C");
     $self->register_suffix(".h");
+    $self->register_suffix(".H");
 }
 
 ###########################################
