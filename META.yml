@@ -5,11 +5,12 @@ version:      0.02
 version_from: lib/File/Comments.pm
 installdirs:  site
 requires:
-    Archive::Tar:                  0
-    Log::Log4perl:                 0
-    Module::Pluggable:             0
-    Pod::Parser:                   0
-    Sysadm::Install:               0
+    Archive::Tar:                  1.23
+    HTML::TokeParser:              2.28
+    Log::Log4perl:                 0.5
+    Module::Pluggable:             2.4
+    PPI:                           0.902
+    Sysadm::Install:               0.12
 
 distribution_type: module
 generated_by: ExtUtils::MakeMaker version 6.17
