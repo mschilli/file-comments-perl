@@ -1,0 +1,12 @@
+#!/usr/bin/perl -w
+###########################################
+# xx -- 
+# Mike Schilli, 2005 (m@perlmeister.com)
+###########################################
+use strict;
+use Sysadm::Install qw(:all);
+
+use File::Comments::Plugin;
+use File::Comments::Plugin::C;
+
+File::Comments::Plugin->new();
