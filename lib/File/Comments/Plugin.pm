@@ -95,6 +95,36 @@ sub extract_c_comments {
 }
 
 ###########################################
+sub extract_html_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my @comments = ();
+
+    while($target->{content} =~ m#<!--(.*?)-->#sg) {
+        push @comments, $1;
+    }
+
+    return \@comments;
+}
+
+###########################################
+sub extract_double_slash_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my @comments = ();
+
+    while($target->{content} =~ 
+            m#/^\s*//(.*?)
+             #mxg) {
+        push @comments, $1;
+    }
+
+    return \@comments;
+}
+
+###########################################
 sub extract_hashed_comments {
 ###########################################
     my($self, $target) = @_;

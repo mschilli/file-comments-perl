@@ -1,10 +1,10 @@
 ###########################################
-# File::Comments::Plugin::Makefile 
+# File::Comments::Plugin::HTML 
 # 2005, Mike Schilli <cpan@perlmeister.com>
 ###########################################
 
 ###########################################
-package File::Comments::Plugin::Makefile;
+package File::Comments::Plugin::HTML;
 ###########################################
 
 use strict;
@@ -20,9 +20,10 @@ sub init {
 ###########################################
     my($self) = @_;
 
-    $self->register_base("Makefile");
-    $self->register_base("makefile");
-    $self->register_suffix(".make");
+    $self->register_suffix(".htm");
+    $self->register_suffix(".html");
+    $self->register_suffix(".HTML");
+    $self->register_suffix(".HTM");
 }
 
 ###########################################
@@ -30,7 +31,7 @@ sub type {
 ###########################################
     my($self, $target) = @_;
 
-    return "make";
+    return "html";
 }
 
 ###########################################
@@ -38,7 +39,7 @@ sub comments {
 ###########################################
     my($self, $target) = @_;
 
-    return $self->extract_hashed_comments($target);
+    return $self->extract_html_comments($target);
 }
 
 1;
@@ -47,15 +48,17 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Makefile - Plugin to detect comments in makefiles
+File::Comments::Plugins::HTML - Plugin to detect comments in HTML source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Makefile;
+    use File::Comments::Plugins::HTML;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Makefile is a plugin for the File::Comments framework.
+File::Comments::Plugins::HTML is a plugin for the File::Comments framework.
+
+Needs to be upgraded with HTML::Parser.
 
 =head1 LEGALESE
 

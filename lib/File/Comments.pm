@@ -325,6 +325,9 @@ is ambiguous (e.g. if several plugins have registered a handler for
 the same suffix), then the file's content is used to narrow down the
 possibilities and arrive at a decision.
 
+WARNING: THIS MODULE IS UNDER DEVELOPMENT, QUALITY IS ALPHA. IF YOU
+FIND BUGS, OR WANT TO CONTRIBUTE PLUGINS, PLEASE SEND THEM MY WAY.
+
 =head2 FILE TYPES
 
 Currently, the following plugins are included in the File::Comments 
@@ -335,7 +338,7 @@ distribution:
     ###############################################
       File::Comments::Plugin::C          c 
       File::Comments::Plugin::Makefile   makefile
-      File::Comments::Plugin::Perl       perl (*)
+      File::Comments::Plugin::Perl       perl
       File::Comments::Plugin::JavaScript js (*)
       File::Comments::Plugin::Java       java (*)
       File::Comments::Plugin::HTML       html (*)
@@ -442,7 +445,7 @@ object. The Perl plugin illustrates this:
         return 0;
     }
 
-If a plugin doesn't define a C<applicable()> method, a default method
+If a plugin does not define a C<applicable()> method, a default method
 is inherited from the base class C<File::Comments::Plugin>, which looks
 like this:
 

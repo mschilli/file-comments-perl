@@ -1,10 +1,10 @@
 ###########################################
-# File::Comments::Plugin::Makefile 
+# File::Comments::Plugin::Python 
 # 2005, Mike Schilli <cpan@perlmeister.com>
 ###########################################
 
 ###########################################
-package File::Comments::Plugin::Makefile;
+package File::Comments::Plugin::Python;
 ###########################################
 
 use strict;
@@ -20,9 +20,7 @@ sub init {
 ###########################################
     my($self) = @_;
 
-    $self->register_base("Makefile");
-    $self->register_base("makefile");
-    $self->register_suffix(".make");
+    $self->register_suffix(".py");
 }
 
 ###########################################
@@ -47,15 +45,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Makefile - Plugin to detect comments in makefiles
+File::Comments::Plugins::Python - Plugin to detect comments in makefiles
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Makefile;
+    use File::Comments::Plugins::Python;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Makefile is a plugin for the File::Comments framework.
+File::Comments::Plugins::Python is a plugin for the File::Comments framework.
 
 =head1 LEGALESE
 

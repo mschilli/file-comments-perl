@@ -10,4 +10,3 @@ use Test::More qw(no_plan);
 BEGIN { use_ok('File::Comments') };
 
 ok(1);
-like("123", qr/^\d+$/);

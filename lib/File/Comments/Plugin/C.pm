@@ -21,6 +21,10 @@ sub init {
     my($self) = @_;
 
     $self->register_suffix(".c");
+    $self->register_suffix(".cpp");
+    $self->register_suffix(".cc");
+    $self->register_suffix(".C");
+    $self->register_suffix(".h");
 }
 
 ###########################################

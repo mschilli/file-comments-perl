@@ -1,10 +1,10 @@
 ###########################################
-# File::Comments::Plugin::Makefile 
+# File::Comments::Plugin::Java 
 # 2005, Mike Schilli <cpan@perlmeister.com>
 ###########################################
 
 ###########################################
-package File::Comments::Plugin::Makefile;
+package File::Comments::Plugin::Java;
 ###########################################
 
 use strict;
@@ -20,9 +20,7 @@ sub init {
 ###########################################
     my($self) = @_;
 
-    $self->register_base("Makefile");
-    $self->register_base("makefile");
-    $self->register_suffix(".make");
+    $self->register_suffix(".java");
 }
 
 ###########################################
@@ -30,7 +28,7 @@ sub type {
 ###########################################
     my($self, $target) = @_;
 
-    return "make";
+    return "java";
 }
 
 ###########################################
@@ -38,7 +36,7 @@ sub comments {
 ###########################################
     my($self, $target) = @_;
 
-    return $self->extract_hashed_comments($target);
+    return $self->extract_c_comments($target);
 }
 
 1;
@@ -47,15 +45,20 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Makefile - Plugin to detect comments in makefiles
+File::Comments::Plugins::Java - Plugin to detect comments in Java source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Makefile;
+    use File::Comments::Plugins::Java;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Makefile is a plugin for the File::Comments framework.
+File::Comments::Plugins::Java is a plugin for the File::Comments framework.
+
+Both /* ... */ and // style comments are recognized.
+
+This is I<not> a full-blown C parser/preprocessor yet, so it gets easily
+confused (e.g. if c strings contain comment sequences).
 
 =head1 LEGALESE
 
