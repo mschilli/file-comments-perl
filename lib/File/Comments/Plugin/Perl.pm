@@ -80,6 +80,9 @@ sub comments_parse_ppi {
     if(!defined $doc) {
         # Parsing perl script failed. Just return everything.
         WARN "Parsing $target->{path} failed";
+
+            # Needs to be destroyed explicitely to avaoid memleaks
+        $doc->DESTROY;
         return $src;
     }
 
@@ -93,6 +96,8 @@ sub comments_parse_ppi {
         push @comments, $line;
     });
 
+        # Needs to be destroyed explicitely to avaoid memleaks
+    $doc->DESTROY;
     return @comments;
 }
 
