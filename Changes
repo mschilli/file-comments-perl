@@ -3,7 +3,11 @@ Revision history for Perl extension File::Comments
 
 0.04  02/15/2005
       (ms) PPI is leaking memory, added optional # and POD comment parser
-           when env var FILE_COMMENTS_PERL_NO_PPI is set.
+           when env var FILE_COMMENTS_PERL_NO_PPI is set. Added dependency
+           on Pod::Parser
+      (ms) cold calls are optional now with new(cold_calls => 0)
+      (ms) fixed javascript to accept /* ... */
+      (ms) added documentation
 
 0.03  02/08/2005
       (ms) Moved extracting functions from Plugin.pm into plugins
