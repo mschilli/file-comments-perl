@@ -56,7 +56,6 @@ DESCRIPTION
     BUGS, OR WANT TO CONTRIBUTE PLUGINS, PLEASE SEND THEM MY WAY.
 
   FILE TYPES
-
     Currently, the following plugins are included in the File::Comments
     distribution:
 
@@ -80,7 +79,6 @@ DESCRIPTION
     the "guess_type()" method.
 
   Writing new plugins
-
     Writing a new plugin to add functionality to the File::Comments
     framework is as simple as defining a new module, derived from the
     baseclass of all plugins, "File::Comments::Plugin". Three additional
@@ -149,7 +147,6 @@ DESCRIPTION
         1;
 
   Advanced plugins
-
     If a file doesn't have an extension or an extensions that's served by
     multiple plugins, File::Comments will go shop around and ask all plugins
     if they want to handle the file. The mothership calls each plugin's

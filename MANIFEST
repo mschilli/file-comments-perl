@@ -23,3 +23,7 @@ t/002C.t
 t/003Makefile.t
 t/004Perl.t
 t/005HTML.t
+t/006Python.t
+t/007PHP.t
+t/008JavaScript.t
+t/009Java.t
