@@ -275,7 +275,7 @@ __END__
 
 =head1 NAME
 
-File::Comments - Extracts comments from files in various formats
+File::Comments - Recognizes file formats and extracts format-specific comments
 
 =head1 SYNOPSIS
 
