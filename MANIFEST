@@ -1,6 +1,7 @@
 Changes
 eg/check-type
 eg/extract-comments
+eg/memtest.pl
 eg/program.c
 lib/File/Comments.pm
 lib/File/Comments/Plugin.pm
