@@ -164,8 +164,13 @@ File::Comments::Plugins::Perl - Plugin to detect comments in perl scripts
 
 File::Comments::Plugins::Perl is a plugin for the File::Comments framework.
 
-This plugin currently just goes for one-line #... comments (no inlining)
-and POD documentation. To be improved.
+Uses L<PPI> to parse Perl code. If this isn't desired (PPI had memory
+problems at the time of this writing), specify
+
+    File::Comments::Plugins::Perl::USE_PPI = 0;
+
+and another, simpler parser will be used. It just goes for one-line 
+#... comments (no inlining) and POD via L<Pod::Parser>.
 
 =head1 LEGALESE
 
