@@ -24,6 +24,9 @@ sub new {
     my($class, %options) = @_;
 
     my $self = {
+
+        cold_calls => 1,
+
         suffixes   => {},
         bases      => {},
         plugins    => [],
@@ -96,6 +99,8 @@ sub find_plugin {
     }
 
         # Hmm ... no volunteers yet.
+    return undef unless $self->{cold_calls};
+
         # Go from door to door and check if some plugin wants to 
         # handle it. Set the 'cold_call' flag to let the plugin know
         # about our desparate move.
@@ -169,6 +174,14 @@ sub register_suffix {
 
         # Could be more than one, line them up
     push @{$self->{suffixes}->{$suffix}}, $plugin_obj;
+}
+
+###########################################
+sub suffix_registered {
+###########################################
+    my($self, $suffix) = @_;
+
+    return exists $self->{suffixes}->{$suffix};
 }
 
 ###########################################
@@ -352,6 +365,42 @@ distribution:
 The constants listed in the I<type> column are the strings returned
 by the C<guess_type()> method.
 
+=head1 Methods
+
+=over 4
+
+=item $snoop = File::Comments-E<gt>new()
+
+Create a new comment extractor engine. This will automatically initialize
+all plugins.
+
+To avoid cold calls (L<Cold Calls>), set C<cold_calls> to a false value
+(defaults to 1):
+
+    $snoop = File::Comments->new( cold_calls => 0 );
+
+=item $comments = $snoop-E<gt>comments("program.c");
+
+Extract all comments from a file. After determining the file type
+by either suffix or content (L<Cold Calls>), comments are extracted
+as chunks and returned as a reference to an array.
+
+To get a single string containing all comments, just join the chunks:
+
+    my $comments_string = join '', @$comments;
+
+=item $type = $snoop-E<gt>guess_type("script.pl")
+
+Guess the type of a file, based on either suffix, or in absense of a suffix
+via L<Cold Calls>. Return the result as a string: C<"c">, C<"makefile">,
+C<"perl">, etc. (L<FILE TYPES>).
+
+=item $snoop->suffix_registered("c")
+
+Returns true if one of the plugins has registered the given suffix.
+
+=back
+
 =head2 Writing new plugins
 
 Writing a new plugin to add functionality to the File::Comments framework
@@ -421,7 +470,7 @@ that start with C<ODDCOMMENT>:
 
     1;
 
-=head2 Advanced plugins
+=head2 Cold Calls
 
 If a file doesn't have an extension or an extensions that's served by
 multiple plugins, File::Comments will go shop around and ask all

@@ -12,6 +12,7 @@ Revision history for Perl extension File::Comments
       (ms) perl plugin now takes __END__ literally. 
       (ms) Fallback if perl parsing fails: return entire script text
            as comment.
+      (ms) JavaScript plugin now accepts both single and multi C comments
 
 0.02  02/07/2005
       (ms) Added PPI parser to Perl plugin, enabling inline comments.

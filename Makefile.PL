@@ -13,6 +13,7 @@ WriteMakefile(
           Sysadm::Install   => 0.11,
           Archive::Tar      => 1.22,
           Module::Pluggable => 2.4,
+          Pod::Parser       => 1.14,
           }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM => 'lib/File/Comments.pm',

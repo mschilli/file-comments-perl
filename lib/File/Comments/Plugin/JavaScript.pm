@@ -9,10 +9,10 @@ package File::Comments::Plugin::JavaScript;
 
 use strict;
 use warnings;
-use File::Comments::Plugin;
+use File::Comments::Plugin::C;
+our @ISA     = qw(File::Comments::Plugin::C);
 use Log::Log4perl qw(:easy);
 
-our @ISA     = qw(File::Comments::Plugin);
 
 ###########################################
 sub init {
@@ -35,11 +35,12 @@ sub comments {
 ###########################################
     my($self, $target) = @_;
 
-    return $self->extract_double_slash_comments($target);
+    return $self->extract_c_comments($target);
 }
 
 ###########################################
 sub extract_double_slash_comments {
+# NOT USED ANYMORE, WE'RE USING C COMMENTS
 ###########################################
     my($self, $target) = @_;
 

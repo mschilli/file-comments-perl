@@ -114,3 +114,10 @@ is($chunks->[0], "!/usr/bin/perl", "hashed comment (non PPI)");
 is($chunks->[1], " First comment", "hashed comment (non PPI)");
 is($chunks->[2], " Third",   "hashed comment (non PPI)");
 is($chunks->[3], "Yada yada yada.\n\n", "pod comment (non PPI)");
+
+######################################################################
+# Disable cold calls
+######################################################################
+$snoop = File::Comments->new(cold_calls => 0);
+$chunks = $snoop->comments($tmpfile3);
+is($chunks, undef, "Cold calls disabled");
