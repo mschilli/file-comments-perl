@@ -336,16 +336,18 @@ distribution:
     ###############################################
     # plugin                              type    #
     ###############################################
-      File::Comments::Plugin::C          c 
-      File::Comments::Plugin::Makefile   makefile
-      File::Comments::Plugin::Perl       perl
-      File::Comments::Plugin::JavaScript js (*)
-      File::Comments::Plugin::Java       java (*)
-      File::Comments::Plugin::HTML       html (*)
-      File::Comments::Plugin::Python     python (*)
-      File::Comments::Plugin::PHP        php (*)
+      File::Comments::Plugin::C          c            (o)
+      File::Comments::Plugin::Makefile   makefile  (X)
+      File::Comments::Plugin::Perl       perl      (X)
+      File::Comments::Plugin::JavaScript js           (o)
+      File::Comments::Plugin::Java       java         (o)
+      File::Comments::Plugin::HTML       html      (X)
+      File::Comments::Plugin::Python     python       (o)
+      File::Comments::Plugin::PHP        php          (o)
 
-      (*) not implemented yet, but soon!
+          (X) Fully implemented
+          (o) Implemented with regular expressions, only works for
+              easy cases until real parsers are employed.
 
 The constants listed in the I<type> column are the strings returned
 by the C<guess_type()> method.

@@ -56,29 +56,29 @@ DESCRIPTION
     BUGS, OR WANT TO CONTRIBUTE PLUGINS, PLEASE SEND THEM MY WAY.
 
   FILE TYPES
-
     Currently, the following plugins are included in the File::Comments
     distribution:
 
         ###############################################
         # plugin                              type    #
         ###############################################
-          File::Comments::Plugin::C          c 
-          File::Comments::Plugin::Makefile   makefile
-          File::Comments::Plugin::Perl       perl
-          File::Comments::Plugin::JavaScript js (*)
-          File::Comments::Plugin::Java       java (*)
-          File::Comments::Plugin::HTML       html (*)
-          File::Comments::Plugin::Python     python (*)
-          File::Comments::Plugin::PHP        php (*)
+          File::Comments::Plugin::C          c            (o)
+          File::Comments::Plugin::Makefile   makefile  (X)
+          File::Comments::Plugin::Perl       perl      (X)
+          File::Comments::Plugin::JavaScript js           (o)
+          File::Comments::Plugin::Java       java         (o)
+          File::Comments::Plugin::HTML       html      (X)
+          File::Comments::Plugin::Python     python       (o)
+          File::Comments::Plugin::PHP        php          (o)
 
-          (*) not implemented yet, but soon!
+              (X) Fully implemented
+              (o) Implemented with regular expressions, only works for
+                  easy cases until real parsers are employed.
 
     The constants listed in the *type* column are the strings returned by
     the "guess_type()" method.
 
   Writing new plugins
-
     Writing a new plugin to add functionality to the File::Comments
     framework is as simple as defining a new module, derived from the
     baseclass of all plugins, "File::Comments::Plugin". Three additional
@@ -147,7 +147,6 @@ DESCRIPTION
         1;
 
   Advanced plugins
-
     If a file doesn't have an extension or an extensions that's served by
     multiple plugins, File::Comments will go shop around and ask all plugins
     if they want to handle the file. The mothership calls each plugin's

@@ -8,8 +8,11 @@ use strict;
 
 use Test::More qw(no_plan);
 use Sysadm::Install qw(:all);
+use Log::Log4perl qw(:easy);
+#Log::Log4perl->easy_init($DEBUG);
 
 BEGIN { use_ok('File::Comments') };
+use File::Comments::Plugin;
 
 my $eg = "eg";
 $eg = "../eg" unless -d $eg;
@@ -17,26 +20,18 @@ $eg = "../eg" unless -d $eg;
 my $snoop = File::Comments->new();
 
 ######################################################################
-my $tmpfile = "$eg/test.c";
+my $tmpfile = "$eg/test.htm";
 END { unlink $tmpfile }
 blurt(<<EOT, $tmpfile);
-/* Some comment */
-main() {
-    // single
-    // line
-foo(); // in-line
-}
-/* multi
- * line
- * comment
- */
+<A HREF="foo">def<!--comment--></A>
+<CENTER>
+<HTML> <!--another comment--><!--and yet another
+<A>--><B>
 EOT
 
 my $chunks = $snoop->comments($tmpfile);
 
-ok($chunks, "find c comments");
-is($chunks->[0], " Some comment ", "single line comment");
-is($chunks->[1], " single", "single line comment");
-is($chunks->[2], " line",   "single line comment");
-is($chunks->[3], " in-line",   "in-line comment");
-is($chunks->[4], " multi\n * line\n * comment\n ", "multi line comment");
+is(scalar @$chunks, 3, "find HTML comments");
+is($chunks->[0], "comment", "HTML comment");
+is($chunks->[1], "another comment", "HTML comment");
+is($chunks->[2], "and yet another\n<A>",   "HTML comment");

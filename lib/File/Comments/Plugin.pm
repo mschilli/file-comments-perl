@@ -9,6 +9,7 @@ package File::Comments::Plugin;
 use strict;
 use warnings;
 use Log::Log4perl qw(:easy);
+use HTML::TokeParser;
 
 our $VERSION = "0.01";
 
@@ -86,7 +87,7 @@ sub extract_c_comments {
         # C parser/preprocessor.
     while($target->{content} =~ 
             m#/\*(.*?)\*/|
-              ^\s*//(.*?)$
+              //(.*?)$
              #mxsg) {
         push @comments, defined $1 ? $1 : $2;
     }
@@ -101,8 +102,16 @@ sub extract_html_comments {
 
     my @comments = ();
 
-    while($target->{content} =~ m#<!--(.*?)-->#sg) {
-        push @comments, $1;
+    my $stream = HTML::TokeParser->new(
+                 \$target->{content});
+
+    while(my $token = $stream->get_token()) {
+        next unless $token->[0] eq "C";
+
+        $token->[1] =~ s/^<!--//;
+        $token->[1] =~ s/-->$//;
+
+        push @comments, $token->[1];
     }
 
     return \@comments;

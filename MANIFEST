@@ -2,6 +2,7 @@ Changes
 eg/check-type
 eg/extract-comments
 eg/program.c
+File-Comments.ppd
 lib/File/Comments.pm
 lib/File/Comments/Plugin.pm
 lib/File/Comments/Plugin/C.pm
@@ -21,3 +22,4 @@ t/001Basic.t
 t/002C.t
 t/003Makefile.t
 t/004Perl.t
+t/005HTML.t
