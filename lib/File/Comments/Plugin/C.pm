@@ -70,15 +70,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::C - Plugin to detect comments in C/C++ source code
+File::Comments::Plugin::C - Plugin to detect comments in C/C++ source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::C;
+    use File::Comments::Plugin::C;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::C is a plugin for the File::Comments framework.
+File::Comments::Plugin::C is a plugin for the File::Comments framework.
 
 Both /* ... */ and // style comments are recognized.
 

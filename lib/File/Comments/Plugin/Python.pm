@@ -38,15 +38,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Python - Plugin to detect comments in makefiles
+File::Comments::Plugin::Python - Plugin to detect comments in makefiles
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Python;
+    use File::Comments::Plugin::Python;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Python is a plugin for the File::Comments framework.
+File::Comments::Plugin::Python is a plugin for the File::Comments framework.
 
 =head1 LEGALESE
 

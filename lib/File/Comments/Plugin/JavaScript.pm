@@ -61,15 +61,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::JavaScript - Plugin to detect comments in JavaScript source code
+File::Comments::Plugin::JavaScript - Plugin to detect comments in JavaScript source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::JavaScript;
+    use File::Comments::Plugin::JavaScript;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::JavaScript is a plugin for the 
+File::Comments::Plugin::JavaScript is a plugin for the 
 File::Comments framework.
 
 // style comments are recognized.

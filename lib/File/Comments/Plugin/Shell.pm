@@ -61,15 +61,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Shell - Plugin to detect comments in shell scripts
+File::Comments::Plugin::Shell - Plugin to detect comments in shell scripts
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Shell;
+    use File::Comments::Plugin::Shell;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Shell is a plugin for the File::Comments framework.
+File::Comments::Plugin::Shell is a plugin for the File::Comments framework.
 
 =head1 LEGALESE
 

@@ -39,15 +39,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::PHP - Plugin to detect comments in PHP source code
+File::Comments::Plugin::PHP - Plugin to detect comments in PHP source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::PHP;
+    use File::Comments::Plugin::PHP;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::PHP is a plugin for the File::Comments framework.
+File::Comments::Plugin::PHP is a plugin for the File::Comments framework.
 
 Both /* ... */ and // style comments are recognized.
 

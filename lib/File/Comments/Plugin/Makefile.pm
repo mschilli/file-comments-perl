@@ -61,15 +61,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Makefile - Plugin to detect comments in makefiles
+File::Comments::Plugin::Makefile - Plugin to detect comments in makefiles
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Makefile;
+    use File::Comments::Plugin::Makefile;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Makefile is a plugin for the File::Comments framework.
+File::Comments::Plugin::Makefile is a plugin for the File::Comments framework.
 
 =head1 LEGALESE
 

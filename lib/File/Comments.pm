@@ -16,7 +16,7 @@ use Module::Pluggable
   #search_path => [qw(File::Comments::Plugin)],
   ;
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 ###########################################
 sub new {

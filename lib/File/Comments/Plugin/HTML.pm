@@ -71,15 +71,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::HTML - Plugin to detect comments in HTML source code
+File::Comments::Plugin::HTML - Plugin to detect comments in HTML source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::HTML;
+    use File::Comments::Plugin::HTML;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::HTML is a plugin for the File::Comments framework.
+File::Comments::Plugin::HTML is a plugin for the File::Comments framework.
 
 It uses HTML::TokeParser to extracts comments from HTML files.
 

@@ -154,20 +154,20 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Perl - Plugin to detect comments in perl scripts
+File::Comments::Plugin::Perl - Plugin to detect comments in perl scripts
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Perl;
+    use File::Comments::Plugin::Perl;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Perl is a plugin for the File::Comments framework.
+File::Comments::Plugin::Perl is a plugin for the File::Comments framework.
 
 Uses L<PPI> to parse Perl code. If this isn't desired (PPI had memory
 problems at the time of this writing), specify
 
-    File::Comments::Plugins::Perl::USE_PPI = 0;
+    File::Comments::Plugin::Perl::USE_PPI = 0;
 
 and another, simpler parser will be used. It just goes for one-line 
 #... comments (no inlining) and POD via L<Pod::Parser>.

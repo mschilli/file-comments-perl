@@ -1,6 +1,9 @@
 ######################################################################
 Revision history for Perl extension File::Comments
 
+0.05  02/16/2005
+      (ms) Mike Castle provided valuable doc fixes.
+
 0.04  02/15/2005
       (ms) PPI is leaking memory, added optional # and POD comment parser
            when env var FILE_COMMENTS_PERL_NO_PPI is set. Added dependency

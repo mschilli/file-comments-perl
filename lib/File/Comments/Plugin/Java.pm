@@ -45,15 +45,15 @@ __END__
 
 =head1 NAME
 
-File::Comments::Plugins::Java - Plugin to detect comments in Java source code
+File::Comments::Plugin::Java - Plugin to detect comments in Java source code
 
 =head1 SYNOPSIS
 
-    use File::Comments::Plugins::Java;
+    use File::Comments::Plugin::Java;
 
 =head1 DESCRIPTION
 
-File::Comments::Plugins::Java is a plugin for the File::Comments framework.
+File::Comments::Plugin::Java is a plugin for the File::Comments framework.
 
 Both /* ... */ and // style comments are recognized.
 
