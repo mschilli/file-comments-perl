@@ -7,11 +7,6 @@ use warnings;
 use strict;
 use Sysadm::Install qw(:all);
 
-BEGIN {
-    cp "adm/Knowledge.tmpl", "lib/Text/Guess/License/Knowledge.pm";
-    $ENV{TEST_GUESS_LICENSE_NO_TRAINING} = 1;
-}
-
     # Available at http://perlmeister.com/scripts
 use ModDevUtils;
 
