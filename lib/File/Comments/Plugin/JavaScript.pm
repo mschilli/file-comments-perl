@@ -12,7 +12,6 @@ use warnings;
 use File::Comments::Plugin;
 use Log::Log4perl qw(:easy);
 
-our $VERSION = "0.01";
 our @ISA     = qw(File::Comments::Plugin);
 
 ###########################################
@@ -28,7 +27,7 @@ sub type {
 ###########################################
     my($self, $target) = @_;
 
-    return "java";
+    return "javascript";
 }
 
 ###########################################
@@ -37,6 +36,22 @@ sub comments {
     my($self, $target) = @_;
 
     return $self->extract_double_slash_comments($target);
+}
+
+###########################################
+sub extract_double_slash_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my @comments = ();
+
+    while($target->{content} =~ 
+            m#^\s*//(.*)
+             #mxg) {
+        push @comments, $1;
+    }
+
+    return \@comments;
 }
 
 1;

@@ -9,11 +9,11 @@ package File::Comments::Plugin::Java;
 
 use strict;
 use warnings;
-use File::Comments::Plugin;
+use File::Comments::Plugin::C;
 use Log::Log4perl qw(:easy);
 
 our $VERSION = "0.01";
-our @ISA     = qw(File::Comments::Plugin);
+our @ISA     = qw(File::Comments::Plugin::C);
 
 ###########################################
 sub init {

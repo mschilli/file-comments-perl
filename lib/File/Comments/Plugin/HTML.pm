@@ -11,6 +11,7 @@ use strict;
 use warnings;
 use File::Comments::Plugin;
 use Log::Log4perl qw(:easy);
+use HTML::TokeParser;
 
 our $VERSION = "0.01";
 our @ISA     = qw(File::Comments::Plugin);
@@ -42,6 +43,28 @@ sub comments {
     return $self->extract_html_comments($target);
 }
 
+###########################################
+sub extract_html_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my @comments = ();
+
+    my $stream = HTML::TokeParser->new(
+                 \$target->{content});
+
+    while(my $token = $stream->get_token()) {
+        next unless $token->[0] eq "C";
+
+        $token->[1] =~ s/^<!--//;
+        $token->[1] =~ s/-->$//;
+
+        push @comments, $token->[1];
+    }
+
+    return \@comments;
+}
+
 1;
 
 __END__
@@ -58,7 +81,7 @@ File::Comments::Plugins::HTML - Plugin to detect comments in HTML source code
 
 File::Comments::Plugins::HTML is a plugin for the File::Comments framework.
 
-Needs to be upgraded with HTML::Parser.
+It uses HTML::TokeParser to extracts comments from HTML files.
 
 =head1 LEGALESE
 

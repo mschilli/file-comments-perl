@@ -10,10 +10,11 @@ package File::Comments::Plugin::PHP;
 use strict;
 use warnings;
 use File::Comments::Plugin;
+use File::Comments::Plugin::C;
 use Log::Log4perl qw(:easy);
 
 our $VERSION = "0.01";
-our @ISA     = qw(File::Comments::Plugin);
+our @ISA     = qw(File::Comments::Plugin::C);
 
 ###########################################
 sub init {
@@ -30,14 +31,6 @@ sub type {
     my($self, $target) = @_;
 
     return "php";
-}
-
-###########################################
-sub comments {
-###########################################
-    my($self, $target) = @_;
-
-    return $self->extract_c_comments($target);
 }
 
 1;

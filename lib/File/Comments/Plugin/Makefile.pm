@@ -41,6 +41,20 @@ sub comments {
     return $self->extract_hashed_comments($target);
 }
 
+###########################################
+sub extract_hashed_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my @comments = ();
+
+    while($target->{content} =~ m/^\s*#(.*)/mg) {
+        push @comments, $1;
+    }
+
+    return \@comments;
+}
+
 1;
 
 __END__

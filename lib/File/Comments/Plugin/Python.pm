@@ -10,10 +10,11 @@ package File::Comments::Plugin::Python;
 use strict;
 use warnings;
 use File::Comments::Plugin;
+use File::Comments::Plugin::Makefile;
 use Log::Log4perl qw(:easy);
 
 our $VERSION = "0.01";
-our @ISA     = qw(File::Comments::Plugin);
+our @ISA     = qw(File::Comments::Plugin::Makefile);
 
 ###########################################
 sub init {
@@ -28,15 +29,7 @@ sub type {
 ###########################################
     my($self, $target) = @_;
 
-    return "make";
-}
-
-###########################################
-sub comments {
-###########################################
-    my($self, $target) = @_;
-
-    return $self->extract_hashed_comments($target);
+    return "python";
 }
 
 1;

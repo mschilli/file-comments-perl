@@ -9,9 +9,6 @@ package File::Comments::Plugin;
 use strict;
 use warnings;
 use Log::Log4perl qw(:easy);
-use HTML::TokeParser;
-
-our $VERSION = "0.01";
 
 ###########################################
 sub new {
@@ -74,78 +71,6 @@ sub register_base {
 ###########################################
 sub mothership { return $_[0]->{mothership} }
 ###########################################
-
-###########################################
-sub extract_c_comments {
-###########################################
-    my($self, $target) = @_;
-
-    my @comments = ();
-
-        # This will get confused with c strings containing things
-        # like "/*", but good enough for now until we can hook in a full 
-        # C parser/preprocessor.
-    while($target->{content} =~ 
-            m#/\*(.*?)\*/|
-              //(.*?)$
-             #mxsg) {
-        push @comments, defined $1 ? $1 : $2;
-    }
-
-    return \@comments;
-}
-
-###########################################
-sub extract_html_comments {
-###########################################
-    my($self, $target) = @_;
-
-    my @comments = ();
-
-    my $stream = HTML::TokeParser->new(
-                 \$target->{content});
-
-    while(my $token = $stream->get_token()) {
-        next unless $token->[0] eq "C";
-
-        $token->[1] =~ s/^<!--//;
-        $token->[1] =~ s/-->$//;
-
-        push @comments, $token->[1];
-    }
-
-    return \@comments;
-}
-
-###########################################
-sub extract_double_slash_comments {
-###########################################
-    my($self, $target) = @_;
-
-    my @comments = ();
-
-    while($target->{content} =~ 
-            m#/^\s*//(.*?)
-             #mxg) {
-        push @comments, $1;
-    }
-
-    return \@comments;
-}
-
-###########################################
-sub extract_hashed_comments {
-###########################################
-    my($self, $target) = @_;
-
-    my @comments = ();
-
-    while($target->{content} =~ m/^\s*#(.*)/mg) {
-        push @comments, $1;
-    }
-
-    return \@comments;
-}
 
 1;
 

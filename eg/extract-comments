@@ -22,7 +22,7 @@ my $snoop = File::Comments->new();
 my $chunks = $snoop->comments($ARGV[0]);
 
 if($chunks) {
-    print "Chunk: $_\n" for @$chunks;
+    print "$_\n" for @$chunks;
 } else {
     print "$ARGV[0]: No comments found\n";
 }
