@@ -88,6 +88,15 @@ Methods
 
             $snoop = File::Comments->new( cold_calls => 0 );
 
+        By default, if no plugin can be found for a given file,
+        "File::Comments" will throw a fatal error and "die()". If this is
+        undesirable and a default plugin should be used instead, it can be
+        specified in the constructor using the "default_plugin" parameter:
+
+            $snoop = File::Comments->new( 
+              default_plugin => "File::Comments::Plugin::Makefile"
+            );
+
     $comments = $snoop->comments("program.c");
         Extract all comments from a file. After determining the file type by
         either suffix or content ("Cold Calls"), comments are extracted as
@@ -213,6 +222,34 @@ Methods
 
     This will deny all *cold calls* and only accept requests for files with
     suffixes or base names the plugin has already signed up for.
+
+  Plugin Inheritance
+    Plugins can reuse existing plugins by inheritance. For example, if you
+    wanted to write a *catch-all* plugin that takes over all cold calls and
+    handles comments like the "Makefile" plugin, you can simply use
+
+        ###########################################
+        package File::Comments::Plugin::Catchall;
+        ###########################################
+
+        use strict;
+        use warnings;
+        use File::Comments::Plugin;
+        use File::Comments::Plugin::Makefile;
+
+        our $VERSION = "0.01";
+        our @ISA     = qw(File::Comments::Plugin::Makefile);
+
+        ###########################################
+        sub applicable {
+        ###########################################
+            my($self) = @_;
+    
+            return 1;
+        }
+
+    "File::Comments::Plugin::Catchall" just implements "applicable()" and
+    inherits everything else from "File::Comments::Plugin::Makefile".
 
 LEGALESE
     Copyright 2005 by Mike Schilli, all rights reserved. This program is
