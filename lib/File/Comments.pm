@@ -25,7 +25,8 @@ sub new {
 
     my $self = {
 
-        cold_calls => 1,
+        cold_calls     => 1,
+        default_plugin => undef,
 
         suffixes   => {},
         bases      => {},
@@ -153,9 +154,13 @@ sub comments {
     my $plugin = $self->find_plugin();
 
     if(! defined $plugin) {
-        ERROR "Type of $target couldn't be determined";
-            # Just return and empty list
-        return undef;
+        if($self->{default_plugin}) {
+            $plugin = $self->{default_plugin};
+        } else {
+            ERROR "Type of $target couldn't be determined";
+                # Just return and empty list
+            return undef;
+        }
     }
 
     DEBUG "Calling ", ref $plugin, 
@@ -379,6 +384,15 @@ To avoid cold calls (L<Cold Calls>), set C<cold_calls> to a false value
 
     $snoop = File::Comments->new( cold_calls => 0 );
 
+By default, if no plugin can be found for a given file, C<File::Comments>
+will throw a fatal error and C<die()>. If this is undesirable and
+a default plugin should be used instead, it can be specified in
+the constructor using the C<default_plugin> parameter:
+
+    $snoop = File::Comments->new( 
+      default_plugin => "File::Comments::Plugin::Makefile"
+    );
+
 =item $comments = $snoop-E<gt>comments("program.c");
 
 Extract all comments from a file. After determining the file type
@@ -511,6 +525,36 @@ like this:
 
 This will deny all I<cold calls> and only accept requests for files
 with suffixes or base names the plugin has already signed up for.
+
+=head2 Plugin Inheritance
+
+Plugins can reuse existing plugins by inheritance. For example, if
+you wanted to write a I<catch-all> plugin that takes over all cold
+calls and handles comments like the C<Makefile> plugin, you can
+simply use
+
+    ###########################################
+    package File::Comments::Plugin::Catchall;
+    ###########################################
+
+    use strict;
+    use warnings;
+    use File::Comments::Plugin;
+    use File::Comments::Plugin::Makefile;
+
+    our $VERSION = "0.01";
+    our @ISA     = qw(File::Comments::Plugin::Makefile);
+
+    ###########################################
+    sub applicable {
+    ###########################################
+        my($self) = @_;
+    
+        return 1;
+    }
+
+C<File::Comments::Plugin::Catchall> just implements C<applicable()>
+and inherits everything else from C<File::Comments::Plugin::Makefile>.
 
 =head1 LEGALESE
 

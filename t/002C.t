@@ -40,3 +40,24 @@ is($chunks->[1], " single", "single line comment");
 is($chunks->[2], " line",   "single line comment");
 is($chunks->[3], " in-line",   "in-line comment");
 is($chunks->[4], " multi\n * line\n * comment\n ", "multi line comment");
+
+######################################################################
+# Unknown extension
+######################################################################
+my $tmpfile2 = "$eg/test.whacko";
+END { unlink $tmpfile2 }
+blurt(<<EOT, $tmpfile2);
+#boo
+EOT
+
+$chunks = $snoop->comments($tmpfile2);
+is($chunks, undef, "Choke on unknown extension");
+
+######################################################################
+# Unknown extension with default plugin
+######################################################################
+$snoop = File::Comments->new(default_plugin => 
+    "File::Comments::Plugin::Makefile");
+
+$chunks = $snoop->comments($tmpfile2);
+is($chunks->[0], "boo", "Fall back to default plugin");

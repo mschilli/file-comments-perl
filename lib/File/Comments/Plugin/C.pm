@@ -23,6 +23,7 @@ sub init {
     $self->register_suffix(".c");
     $self->register_suffix(".cpp");
     $self->register_suffix(".cc");
+    $self->register_suffix(".CC");
     $self->register_suffix(".C");
     $self->register_suffix(".h");
     $self->register_suffix(".H");

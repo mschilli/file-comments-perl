@@ -1,9 +1,11 @@
 ######################################################################
 Revision history for Perl extension File::Comments
 
-0.05  02/16/2005
+0.05  02/17/2005
       (ms) Mike Castle provided valuable doc fixes.
       (ms) Adam K provided workaround for PPI memleak.
+      (ms) introduced default_plugin parameter
+      (ms) added documentation about plugin inheritance
 
 0.04  02/15/2005
       (ms) PPI is leaking memory, added optional # and POD comment parser
