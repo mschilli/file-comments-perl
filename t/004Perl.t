@@ -14,6 +14,8 @@ use Log::Log4perl qw(:easy);
 BEGIN { use_ok('File::Comments') };
 use File::Comments::Plugin;
 
+my $a = $File::Comments::Plugin::Perl::USE_PPI;
+
 my $eg = "eg";
 $eg = "../eg" unless -d $eg;
 
@@ -98,3 +100,17 @@ is($chunks->[3], " Third",   "hashed comment");
 is($chunks->[4], "\n\n=head2 some pod\n\nYada yada yada." .
                  "\n\n=cut\n\nprint \"Yada\n\";\n", 
                  "pod comment");
+
+######################################################################
+# Do not use PPI
+######################################################################
+$File::Comments::Plugin::Perl::USE_PPI = 0;
+$chunks = $snoop->comments($tmpfile3);
+
+is(@$chunks, 4, "find perl comments");
+
+#!/usr/bin/perl- First comment- Second- Third-Yada yada yada.
+is($chunks->[0], "!/usr/bin/perl", "hashed comment (non PPI)");
+is($chunks->[1], " First comment", "hashed comment (non PPI)");
+is($chunks->[2], " Third",   "hashed comment (non PPI)");
+is($chunks->[3], "Yada yada yada.\n\n", "pod comment (non PPI)");
