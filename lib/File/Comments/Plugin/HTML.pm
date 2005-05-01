@@ -78,17 +78,15 @@ sub strip_html_comments {
 ###########################################
     my($self, $target) = @_;
 
-    my $stripped = "";
+    require HTML::TreeBuilder;
 
-    my $stream = HTML::TokeParser->new(
-                 \$target->{content});
-
-    while(my $token = $stream->get_token()) {
-        next if $token->[0] eq "C";
-        $stripped .= $token->[1];
+    my $root = HTML::TreeBuilder->new();
+    $root->parse($target->{content});
+    if(!$root) {
+        WARN "Cannot parse $target->{path}";
+        return $target->{content};
     }
-
-    return $stripped;
+    return $root->as_HTML();
 }
 
 1;

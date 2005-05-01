@@ -75,6 +75,7 @@ sub stripped {
     my($self, $target) = @_;
 
     my $data = $target->{content};
+    $data =~ s/^__END__(.*)//ms;
 
     if($USE_PPI) {
         require PPI;
