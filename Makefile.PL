@@ -8,6 +8,7 @@ WriteMakefile(
     'VERSION_FROM' => 'lib/File/Comments.pm', # finds $VERSION
     'PREREQ_PM'    => {
           HTML::TokeParser  => 2.28,
+          HTML::TreeBuilder => 0,
           PPI               => 0.902,
           Log::Log4perl     => 0.50,
           Sysadm::Install   => 0.11,
