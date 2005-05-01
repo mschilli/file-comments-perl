@@ -16,7 +16,7 @@ use Module::Pluggable
   #search_path => [qw(File::Comments::Plugin)],
   ;
 
-our $VERSION = "0.05";
+our $VERSION = "0.06";
 
 ###########################################
 sub new {
@@ -145,6 +145,22 @@ sub comments {
 ###########################################
     my($self, $target) = @_;
 
+    return  $_[0]->dispatch($target, "comments");
+}
+
+###########################################
+sub stripped {
+###########################################
+    my($self, $target) = @_;
+
+    return  $_[0]->dispatch($target, "stripped");
+}
+
+###########################################
+sub dispatch {
+###########################################
+    my($self, $target, $function) = @_;
+
     if(ref $target) {
         $self->{target} = $target;
     } else {
@@ -166,7 +182,7 @@ sub comments {
     DEBUG "Calling ", ref $plugin, 
           " to handle $self->{target}->{path}";
 
-    return $plugin->comments($self->{target});
+    return $plugin->$function($self->{target});
 }
 
 ###########################################
@@ -317,6 +333,10 @@ File::Comments - Recognizes file formats and extracts format-specific comments
     my $comments = $snoop->comments("script.pl");
         # => [" comment", " another comment"]
 
+        # or strip comments from a file:
+    my $stripped = $snoop->stripped("script.pl");
+        # => "print "howdy!\n";"
+
         # or just guess a file's type:
     my $type = $snoop->guess_type("program.c");    
         # => "c"
@@ -325,7 +345,8 @@ File::Comments - Recognizes file formats and extracts format-specific comments
 
 File::Comments guesses the type of a given file, determines the format
 used for comments, extracts all comments, and returns them as a reference
-to an array of chunks.
+to an array of chunks. Alternatively, it strips all comments from a
+file.
 
 Currently supported are Perl scripts, C/C++ programs, Java, makefiles,
 JavaScript, Python and PHP.
@@ -402,6 +423,12 @@ as chunks and returned as a reference to an array.
 To get a single string containing all comments, just join the chunks:
 
     my $comments_string = join '', @$comments;
+
+=item $stripped_text = $snoop-E<gt>stripped("program.c");
+
+Strip all comments from a file. After determining the file type
+by either suffix or content (L<Cold Calls>), all comments are removed
+and the stripped text is returned in a scalar.
 
 =item $type = $snoop-E<gt>guess_type("script.pl")
 

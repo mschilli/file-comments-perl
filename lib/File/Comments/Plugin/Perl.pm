@@ -70,6 +70,35 @@ sub comments {
 }
 
 #####################################################
+sub stripped {
+#####################################################
+    my($self, $target) = @_;
+
+    my $data = $target->{content};
+
+    if($USE_PPI) {
+        require PPI;
+        my $doc = PPI::Document->new($data);
+
+        if($doc) {
+            # Remove all that nasty documentation
+            $doc->prune("PPI::Token::Pod");
+            $doc->prune("PPI::Token::Comment");
+            my $stripped = $doc->serialize();
+            $doc->DESTROY;
+            return $stripped;
+        } else {
+            # Parsing perl script failed. Just return everything.
+            WARN "Parsing $target->{path} failed";
+            $doc->DESTROY;
+            return $data;
+        }
+    }
+
+    LOGDIE __PACKAGE__, "->stripped() only supported with PPI";
+}
+
+#####################################################
 sub comments_parse_ppi {
 #####################################################
     my($self, $target, $src) = @_;

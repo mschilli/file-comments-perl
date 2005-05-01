@@ -39,6 +39,14 @@ sub comments {
     return $self->extract_c_comments($target);
 }
 
+###########################################
+sub stripped {
+###########################################
+    my($self, $target) = @_;
+
+    return $self->strip_c_comments($target);
+}
+
 1;
 
 __END__

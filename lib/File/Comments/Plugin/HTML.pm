@@ -44,6 +44,14 @@ sub comments {
 }
 
 ###########################################
+sub stripped {
+###########################################
+    my($self, $target) = @_;
+
+    return $self->strip_html_comments($target);
+}
+
+###########################################
 sub extract_html_comments {
 ###########################################
     my($self, $target) = @_;
@@ -63,6 +71,24 @@ sub extract_html_comments {
     }
 
     return \@comments;
+}
+
+###########################################
+sub strip_html_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my $stripped = "";
+
+    my $stream = HTML::TokeParser->new(
+                 \$target->{content});
+
+    while(my $token = $stream->get_token()) {
+        next if $token->[0] eq "C";
+        $stripped .= $token->[1];
+    }
+
+    return $stripped;
 }
 
 1;

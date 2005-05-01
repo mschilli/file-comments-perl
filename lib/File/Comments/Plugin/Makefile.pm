@@ -42,6 +42,14 @@ sub comments {
 }
 
 ###########################################
+sub stripped {
+###########################################
+    my($self, $target) = @_;
+
+    return $self->strip_hashed_comments($target);
+}
+
+###########################################
 sub extract_hashed_comments {
 ###########################################
     my($self, $target) = @_;
@@ -53,6 +61,18 @@ sub extract_hashed_comments {
     }
 
     return \@comments;
+}
+
+###########################################
+sub strip_hashed_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my $stripped = $target->{content};
+
+    $stripped =~ s/^\s*#(.*)\n//mg;
+
+    return $stripped;
 }
 
 1;

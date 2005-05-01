@@ -55,6 +55,14 @@ sub comments {
     return File::Comments::Plugin::Makefile->extract_hashed_comments($target);
 }
 
+###########################################
+sub stripped {
+###########################################
+    my($self, $target) = @_;
+
+    return File::Comments::Plugin::Makefile->strip_hashed_comments($target);
+}
+
 1;
 
 __END__

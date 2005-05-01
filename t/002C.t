@@ -41,6 +41,11 @@ is($chunks->[2], " line",   "single line comment");
 is($chunks->[3], " in-line",   "in-line comment");
 is($chunks->[4], " multi\n * line\n * comment\n ", "multi line comment");
 
+my $stripped = $snoop->stripped($tmpfile);
+is($stripped, "main() {\nfoo();\n}\n", "Stripping comments");
+#$stripped =~ s/ /X/g;
+#print "stripped={$stripped}\n";
+
 ######################################################################
 # Unknown extension
 ######################################################################

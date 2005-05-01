@@ -46,6 +46,14 @@ sub comments {
 }
 
 ###########################################
+sub stripped {
+###########################################
+    my($self, $target) = @_;
+
+    return $self->strip_c_comments($target);
+}
+
+###########################################
 sub extract_c_comments {
 ###########################################
     my($self, $target) = @_;
@@ -63,6 +71,28 @@ sub extract_c_comments {
     }
 
     return \@comments;
+}
+
+###########################################
+sub strip_c_comments {
+###########################################
+    my($self, $target) = @_;
+
+    my @comments = ();
+
+        # This will get confused with c strings containing things
+        # like "/*", but good enough for now until we can hook in a full 
+        # C parser/preprocessor.
+    my $stripped = $target->{content};
+
+    $stripped =~ 
+            s#^\s*/\*.*?\*/(\s*\n)?|
+              /\*.*?\*/|
+              ^\s*//.*?\n|
+              \s*//.*?$
+             ##mxsg;
+
+    return $stripped;
 }
 
 1;

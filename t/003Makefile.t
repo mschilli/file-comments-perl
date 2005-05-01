@@ -36,3 +36,6 @@ ok($chunks, "find make comments");
 is($chunks->[0], " First comment", "hashed comment");
 is($chunks->[1], " Second", "hashed comment");
 is($chunks->[2], " Third",   "hashed comment");
+
+my $stripped = $snoop->stripped($tmpfile);
+is($stripped, "all:\n\tcc foo bar\n", "stripped comments");

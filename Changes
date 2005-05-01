@@ -1,6 +1,10 @@
 ######################################################################
 Revision history for Perl extension File::Comments
 
+0.06  2005/05/01
+      (ms) Added stripped() method stripping comments from a file
+           and returning the stripped text.
+
 0.05  02/17/2005
       (ms) Mike Castle provided valuable doc fixes.
       (ms) Adam K provided workaround for PPI memleak.
