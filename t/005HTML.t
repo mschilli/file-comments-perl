@@ -35,3 +35,7 @@ is(scalar @$chunks, 3, "find HTML comments");
 is($chunks->[0], "comment", "HTML comment");
 is($chunks->[1], "another comment", "HTML comment");
 is($chunks->[2], "and yet another\n<A>",   "HTML comment");
+
+my $stripped = $snoop->stripped($tmpfile);
+is($stripped, qq{<html><head></head><body><a href="foo">def</a><center> </center><b></b></body> </html>\n}, "stripped HTML comments");
+

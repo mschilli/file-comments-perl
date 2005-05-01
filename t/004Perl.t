@@ -25,8 +25,10 @@ my $snoop = File::Comments->new();
 my $tmpfile = "$eg/test.pl";
 END { unlink $tmpfile }
 blurt(<<EOT, $tmpfile);
+foo(); # foo
 # First comment
 # Second
+bar(); # bar
 # Third
 __END__
 # End
@@ -35,10 +37,15 @@ EOT
 my $chunks = $snoop->comments($tmpfile);
 
 ok($chunks, "find perl comments");
-is($chunks->[0], " First comment", "hashed comment");
-is($chunks->[1], " Second", "hashed comment");
-is($chunks->[2], " Third",   "hashed comment");
-is($chunks->[3], "\n# End\n",   "__END__");
+is($chunks->[0], " foo", "hashed comment");
+is($chunks->[1], " First comment", "hashed comment");
+is($chunks->[2], " Second", "hashed comment");
+is($chunks->[3], " bar",   "hashed comment");
+is($chunks->[4], " Third",   "hashed comment");
+is($chunks->[5], "\n# End\n",   "__END__");
+
+my $stripped = $snoop->stripped($tmpfile);
+is($stripped, "foo(); \nbar(); \n", "stripped comments");
 
 ######################################################################
 my $tmpfile2 = "$eg/testperl";
