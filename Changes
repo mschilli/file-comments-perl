@@ -1,6 +1,11 @@
 ######################################################################
 Revision history for Perl extension File::Comments
 
+0.06  2006/10/09
+      (ms) PPI::Document's constructor now wants a reference to a
+           text string.
+      (ms) fixed uninitialized messages in ::target::load DEBUG message.
+
 0.06  2005/05/01
       (ms) Added stripped() method stripping comments from a file
            and returning the stripped text.

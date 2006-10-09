@@ -16,7 +16,7 @@ use Module::Pluggable
   #search_path => [qw(File::Comments::Plugin)],
   ;
 
-our $VERSION = "0.06";
+our $VERSION = "0.07";
 
 ###########################################
 sub new {
@@ -294,10 +294,18 @@ sub load {
             ($self->{file_name} =~ m#(.+)(\.[^.]*$)#);
     }
 
-    DEBUG "Loaded file path=$path name=$self->{file_name} ",
-          "dir=$self->{dir} suffix=", 
-          defined $self->{suffix} ? $self->{suffix} : "[undef]",
-          " base=$self->{file_base}"; 
+    DEBUG "Loaded file path=", def($path),
+          " name=",            def($self->{file_name}),
+          " dir=",             def($self->{dir}), 
+          " suffix=",          def($self->{suffix}), 
+          " base=",            def($self->{file_base}); 
+}
+
+###########################################
+sub def {
+###########################################
+    return $_[0] if defined $_[0];
+    return "**undef**";
 }
 
 File::Comments::make_accessor("File::Comments::Target", $_)

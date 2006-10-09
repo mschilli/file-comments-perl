@@ -9,7 +9,7 @@ WriteMakefile(
     'PREREQ_PM'    => {
           HTML::TokeParser  => 2.28,
           HTML::TreeBuilder => 0,
-          PPI               => 0.902,
+          PPI               => 1.115,
           Log::Log4perl     => 0.50,
           Sysadm::Install   => 0.11,
           Archive::Tar      => 1.22,

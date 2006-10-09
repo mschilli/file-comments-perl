@@ -79,7 +79,7 @@ sub stripped {
 
     if($USE_PPI) {
         require PPI;
-        my $doc = PPI::Document->new($data);
+        my $doc = PPI::Document->new(\$data);
 
         if($doc) {
             # Remove all that nasty documentation
@@ -104,7 +104,7 @@ sub comments_parse_ppi {
 #####################################################
     my($self, $target, $src) = @_;
 
-    my $doc = PPI::Document->new($src); #bar
+    my $doc = PPI::Document->new(\$src); #bar
     my @comments = ();
 
     if(!defined $doc) {
