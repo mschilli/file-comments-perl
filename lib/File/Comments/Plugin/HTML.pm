@@ -86,7 +86,11 @@ sub strip_html_comments {
         WARN "Cannot parse $target->{path}";
         return $target->{content};
     }
-    return $root->as_HTML();
+    my $stripped_html = $root->as_HTML();
+    # HTML::Element < 4 appends a newline to the HTML
+    # for no apparent reason (CPAN RT#41739)
+    $stripped_html =~ s/\n$//;
+    return $stripped_html;
 }
 
 1;
