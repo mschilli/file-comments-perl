@@ -40,10 +40,3 @@ my $stripped = $snoop->stripped($tmpfile);
 is($stripped, qq{<html><head></head><body><a href="foo">def</a><center> </center><b></b></body> </html>}, "stripped HTML comments");
 
 is ($snoop->guess_type($tmpfile), 'html', 'HTML type matched');
-
-## Give it some duff content
-#blurt(<<EOT, $tmpfile);
-#<p>a<div>b</p>c</div>
-#EOT
-#$stripped = $snoop->stripped($tmpfile);
-#is ($stripped, qq{<body><body><body></head>}, 'Unparseable/invalid HTML');
