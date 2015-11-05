@@ -39,3 +39,6 @@ is($chunks->[1], " single", "single line comment");
 is($chunks->[2], " line",   "single line comment");
 is($chunks->[3], " in-line",   "in-line comment");
 is($chunks->[4], " multi\n * line\n * comment\n ", "multi line comment");
+
+is ($snoop->guess_type($tmpfile), 'java', 'Java type matched');
+is ($snoop->stripped($tmpfile), "foo();\n}\n", 'Comments stripped');

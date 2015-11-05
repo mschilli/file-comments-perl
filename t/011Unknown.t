@@ -9,7 +9,6 @@ use strict;
 use Test::More qw(no_plan);
 use Sysadm::Install qw(:all);
 use Log::Log4perl qw(:easy);
-#Log::Log4perl->easy_init($DEBUG);
 
 BEGIN { use_ok('File::Comments') };
 use File::Comments::Plugin;
@@ -20,24 +19,19 @@ $eg = "../eg" unless -d $eg;
 my $snoop = File::Comments->new();
 
 ######################################################################
-my $tmpfile = "$eg/Makefile";
+my $tmpfile = "$eg/foo.baz";
 END { unlink $tmpfile }
 blurt(<<EOT, $tmpfile);
-# First comment
-all:
-	cc foo bar
-# Second
-# Third
+dfkgsrugslgjlsghrlhslgrhsleghlseg
+gselghelruiglshrgs
+gslekruhl
 EOT
 
+is ($snoop->guess_type($tmpfile), undef, 'No type matched for file');
 my $chunks = $snoop->comments($tmpfile);
+is (@$chunks, 0, 'No comments in unknown file');
 
-ok($chunks, "find make comments");
-is($chunks->[0], " First comment", "hashed comment");
-is($chunks->[1], " Second", "hashed comment");
-is($chunks->[2], " Third",   "hashed comment");
-
-my $stripped = $snoop->stripped($tmpfile);
-is($stripped, "all:\n\tcc foo bar\n", "stripped comments");
-
-is ($snoop->guess_type($tmpfile), 'make', 'Makefile type matched');
+my $target = File::Comments::Target->new(path => $tmpfile);
+is ($snoop->guess_type($target), undef, 'No type matched for target');
+$chunks = $snoop->comments($target);
+is (@$chunks, 0, 'No comments in unknown target');

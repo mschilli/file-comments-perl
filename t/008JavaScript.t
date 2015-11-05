@@ -31,3 +31,5 @@ my $chunks = $snoop->comments($tmpfile);
 is(scalar @$chunks, 2, "find javascript comments");
 is($chunks->[0], " single", "single line comment");
 is($chunks->[1], " line",   "single line comment");
+
+is ($snoop->guess_type($tmpfile), 'javascript', 'Javascript type matched');

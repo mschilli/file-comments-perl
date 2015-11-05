@@ -46,6 +46,8 @@ is($stripped, "main() {\nfoo();\n}\n", "Stripping comments");
 #$stripped =~ s/ /X/g;
 #print "stripped={$stripped}\n";
 
+is ($snoop->guess_type($tmpfile), 'c', 'C type matched');
+
 ######################################################################
 # Unknown extension
 ######################################################################
