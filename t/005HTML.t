@@ -39,3 +39,4 @@ is($chunks->[2], "and yet another\n<A>",   "HTML comment");
 my $stripped = $snoop->stripped($tmpfile);
 is($stripped, qq{<html><head></head><body><a href="foo">def</a><center> </center><b></b></body> </html>}, "stripped HTML comments");
 
+is ($snoop->guess_type($tmpfile), 'html', 'HTML type matched');

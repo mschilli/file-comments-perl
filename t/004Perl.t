@@ -34,6 +34,7 @@ __END__
 # End
 EOT
 
+is ($snoop->guess_type($tmpfile), 'perl', 'Perl type matched');
 my $chunks = $snoop->comments($tmpfile);
 
 ok($chunks, "find perl comments");
