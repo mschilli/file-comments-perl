@@ -12,12 +12,15 @@ my $meta_merge = {
     }
 };
 
+my $min_perl_ver = {
+    'MIN_PERL_VERSION'  => '5.6.0'
+};
+
 WriteMakefile(
     'NAME'              => 'File::Comments',
     'VERSION_FROM'      => 'lib/File/Comments.pm', # finds $VERSION
     'ABSTRACT_FROM'     => 'lib/File/Comments.pm',
     'AUTHOR'            => 'Mike Schilli <cpan@perlmeister.com>',
-    'MIN_PERL_VERSION'  => '5.6.0',
     'PREREQ_PM'         => {
           HTML::TokeParser  => 2.28,
           HTML::TreeBuilder => 0,
@@ -27,5 +30,6 @@ WriteMakefile(
           Module::Pluggable => 2.4,
           Pod::Parser       => 1.14,
           }, # e.g., Module::Name => 1.1
-    $ExtUtils::MakeMaker::VERSION >= 6.50 ? (%$meta_merge) : (),
+    $ExtUtils::MakeMaker::VERSION >= 6.50 ? (%$meta_merge)   : (),
+    $ExtUtils::MakeMaker::VERSION >= 6.48 ? (%$min_perl_ver) : (),
 );
