@@ -13,7 +13,7 @@ use File::Comments::Plugin;
 use Log::Log4perl qw(:easy);
 use HTML::TokeParser;
 
-our $VERSION = "0.01";
+our $VERSION = "0.08";
 our @ISA     = qw(File::Comments::Plugin);
 
 ###########################################

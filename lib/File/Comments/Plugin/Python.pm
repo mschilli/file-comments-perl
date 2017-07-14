@@ -13,7 +13,7 @@ use File::Comments::Plugin;
 use File::Comments::Plugin::Makefile;
 use Log::Log4perl qw(:easy);
 
-our $VERSION = "0.01";
+our $VERSION = "0.08";
 our @ISA     = qw(File::Comments::Plugin::Makefile);
 
 ###########################################
