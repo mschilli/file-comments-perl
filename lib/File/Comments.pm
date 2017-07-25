@@ -487,7 +487,6 @@ that start with C<ODDCOMMENT>:
     use warnings;
     use File::Comments::Plugin;
 
-    our $VERSION = "0.01";
     our @ISA     = qw(File::Comments::Plugin);
 
     ###########################################
@@ -577,7 +576,6 @@ simply use
     use File::Comments::Plugin;
     use File::Comments::Plugin::Makefile;
 
-    our $VERSION = "0.01";
     our @ISA     = qw(File::Comments::Plugin::Makefile);
 
     ###########################################

@@ -13,7 +13,6 @@ use File::Comments::Plugin;
 use Log::Log4perl qw(:easy);
 use Sysadm::Install qw(:all);
 
-our $VERSION = "0.01";
 our @ISA     = qw(File::Comments::Plugin::Makefile);
 our $USE_PPI = 1;
 

@@ -1,6 +1,9 @@
 ######################################################################
 Revision history for Perl extension File::Comments
 
+0.09  (not yet released)
+      (ms) Removed superfluous VERSION variables throughout .pm files
+
 0.08  2010/12/10
       (ms) [RT 63788] Adapting to HTML::Element >=4 change that
            omits trailing newline in generated HTML. Patch by 
